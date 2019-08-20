@@ -1,11 +1,13 @@
 import React, {PureComponent} from 'react';
-import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import {Text} from './Text';
-import MessageContainer from './MessageContainer';
-import Timestamp from './Timestamp';
-import Message from './Message';
-import {User1} from './Data';
+import Bubble from './Bubble';
 import SystemMessage from './SystemMessage';
 
 export default class MessagesBoard extends PureComponent {
@@ -14,6 +16,7 @@ export default class MessagesBoard extends PureComponent {
     user: PropTypes.object,
     loadEarlier: PropTypes.func,
     loading: PropTypes.bool,
+    onBubbleLongPress: PropTypes.func,
   };
 
   renderMessage = ({item, index}) => {
@@ -31,13 +34,7 @@ export default class MessagesBoard extends PureComponent {
       showDate = currentDate !== nextDate;
     }
 
-    if (system)
-      return (
-        <MessageContainer refresh={showDate}>
-          {showDate && <Timestamp timestamp={timestamp} />}
-          <SystemMessage {...item} />
-        </MessageContainer>
-      );
+    if (system) return <SystemMessage {...item} />;
 
     const continuation =
       data[index + 1] &&
@@ -46,14 +43,14 @@ export default class MessagesBoard extends PureComponent {
       data[index + 1].user.id === user.id;
 
     return (
-      <MessageContainer refresh={showDate}>
-        {showDate && <Timestamp timestamp={timestamp} />}
-        <Message
-          {...item}
-          userMade={owner.id === user.id}
-          continuation={continuation}
-        />
-      </MessageContainer>
+      <Bubble
+        refresh={showDate}
+        item={item}
+        showDate={showDate}
+        continuation={continuation}
+        userMade={owner.id === user.id}
+        onLongPress={this.onLongPress}
+      />
     );
   };
 
@@ -82,6 +79,11 @@ export default class MessagesBoard extends PureComponent {
     if (this.props.renderLoadingEarlier) this.props.renderLoadingEarlier();
     else
       return <ActivityIndicator style={styles.loadingEarlier} size={'large'} />;
+  };
+
+  onLongPress = () => {
+    if (this.props.onBubbleLongPress) this.props.onBubbleLongPress();
+    else Alert.alert('Pressed');
   };
 
   keyExtractor = item => item.id;

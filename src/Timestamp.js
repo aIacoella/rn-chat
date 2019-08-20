@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   timestamp: {
     fontSize: 14,
     fontWeight: '500',
+    alignSelf: 'center',
   },
 });
 

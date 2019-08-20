@@ -10,6 +10,7 @@ export default ({
   userMade,
   styleMessageContent,
   continuation,
+  pressed,
 }) => {
   return (
     <View
@@ -17,6 +18,7 @@ export default ({
         styles.container,
         userMade ? styles.right : styles.left,
         continuation ? styles.continuation : null,
+        pressed ? styles.pressed : null,
         styleMessageContainer,
       ]}>
       <MessageText style={[styles.content, styleMessageContent]}>
@@ -68,6 +70,9 @@ const styles = StyleSheet.create({
   right: {
     alignSelf: 'flex-end',
     backgroundColor: USER_BACKGROUND_COLOR,
+  },
+  pressed: {
+    backgroundColor: '#D1FCFF',
   },
   content: {
     fontSize: 15,
