@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import Bubble from './Bubble';
 import SystemMessage from './SystemMessage';
+import Settings from './Settings';
 
 export default class MessagesBoard extends PureComponent {
   static propTypes = {
@@ -21,16 +22,19 @@ export default class MessagesBoard extends PureComponent {
 
   renderMessage = ({item, index}) => {
     const {user: owner, data} = this.props;
-    let {timestamp, user, system} = item;
+
+    let timestamp = item[Settings.TIMESTAMP];
+    const user = item[Settings.USER];
+    const system = item[Settings.SYSTEM];
 
     timestamp = timestamp instanceof Date ? timestamp : new Date(timestamp);
     let showDate = index == data.length - 1;
     if (!showDate) {
       const currentDate = timestamp.getDate();
       const nextDate =
-        data[index + 1].timestamp instanceof Date
-          ? data[index + 1].timestamp.getDate()
-          : new Date(data[index + 1].timestamp).getDate();
+        data[index + 1][Settings.TIMESTAMP] instanceof Date
+          ? data[index + 1][Settings.TIMESTAMP].getDate()
+          : new Date(data[index + 1][Settings.TIMESTAMP]).getDate();
       showDate = currentDate !== nextDate;
     }
 
@@ -38,9 +42,10 @@ export default class MessagesBoard extends PureComponent {
 
     const continuation =
       data[index + 1] &&
-      data[index + 1].user &&
+      data[index + 1][Settings.USER] &&
       !showDate &&
-      data[index + 1].user.id === user.id;
+      data[index + 1][Settings.USER][Settings.USER_ID] ===
+        user[Settings.USER_ID];
 
     return (
       <Bubble
@@ -48,7 +53,7 @@ export default class MessagesBoard extends PureComponent {
         item={item}
         showDate={showDate}
         continuation={continuation}
-        userMade={owner.id === user.id}
+        userMade={owner[Settings.USER_ID] === user[Settings.USER_ID]}
         onLongPress={this.onLongPress}
       />
     );
@@ -86,7 +91,7 @@ export default class MessagesBoard extends PureComponent {
     else Alert.alert('Pressed');
   };
 
-  keyExtractor = item => item.id;
+  keyExtractor = item => item[Settings.MESSAGE_ID];
 }
 
 const styles = StyleSheet.create({

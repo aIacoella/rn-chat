@@ -42,6 +42,7 @@ export default class App extends Component {
           onSend={this.onSend}
           loadEarlier={this.loadEarlier}
           loading={loading}
+          syntax={{message: {text: 'testo'}}}
         />
       </View>
     );

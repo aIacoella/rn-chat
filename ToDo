@@ -5,7 +5,7 @@ Features
 - [ ] Vocals
 - [x] Touchable links
 - [ ] Customisable components
-- [ ] Keys customization
+- [x] Keys customization
 - [ ] Composer actions
 - [x] Load Earlier 
 - [x] Long press
@@ -15,4 +15,4 @@ Features
 - [x] System messages
 
 ToDo
-- [ ] Generalize Timestamp
+- [ ] **Generalize Timestamp

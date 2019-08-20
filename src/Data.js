@@ -29,7 +29,7 @@ const generateMessages = (numMessages, from, to) => {
     messages.unshift({
       id: uuid.v4(),
       timestamp: timestamp.toString(),
-      text: 'Messaggio ' + i,
+      testo: 'Messaggio ' + i,
       user: Math.random() < 0.5 ? User1 : User2,
     });
 
@@ -37,7 +37,7 @@ const generateMessages = (numMessages, from, to) => {
       messages.unshift({
         id: uuid.v4(),
         timestamp: timestamp.toString(),
-        text: 'Messaggio ' + i,
+        testo: 'Messaggio ' + i,
         system: true,
       });
   }

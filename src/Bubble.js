@@ -3,6 +3,7 @@ import {StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
 import PropTypes from 'prop-types';
 import Timestamp from './Timestamp';
 import Message from './Message';
+import Settings from './Settings';
 
 export default class Bubble extends Component {
   static propTypes = {
@@ -24,7 +25,6 @@ export default class Bubble extends Component {
     prevState.pressed !== this.state.pressed;
 
   onPressIn = () => {
-    console.log('Ao');
     this.setState({pressed: true});
   };
   onPressOut = () => {
@@ -37,14 +37,15 @@ export default class Bubble extends Component {
 
     return (
       <View>
-        {showDate && <Timestamp timestamp={item.timestamp} />}
+        {showDate && <Timestamp timestamp={item[Settings.TIMESTAMP]} />}
         <TouchableWithoutFeedback
           onPressIn={this.onPressIn}
           onPressOut={this.onPressOut}
           onLongPress={onLongPress}>
           <View>
             <Message
-              {...item}
+              text={item[Settings.TEXT]}
+              timestamp={item[Settings.TIMESTAMP]}
               userMade={userMade}
               continuation={continuation}
               pressed={pressed}
