@@ -1,0 +1,17 @@
+RN-Chat
+
+Features
+- [ ] Images
+- [ ] Vocals
+- [x] Touchable links
+- [ ] Customisable components
+- [ ] Composer actions
+- [x] Load Earlier 
+- [ ] Long press highlight
+- [ ] ? Avatar
+- [x] Multiline
+- [ ] Redux Support
+- [ ] System messages
+
+ToDo
+- [ ] Generalize Timestamp

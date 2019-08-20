@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
 import PropTypes from 'prop-types';
 import {Text} from './Text';
 import MessageContainer from './MessageContainer';
@@ -11,6 +11,8 @@ export default class MessagesBoard extends PureComponent {
   static propTypes = {
     data: PropTypes.array.isRequired,
     user: PropTypes.object,
+    loadEarlier: PropTypes.func,
+    loading: PropTypes.bool,
   };
 
   renderMessage = ({item, index}) => {
@@ -45,7 +47,7 @@ export default class MessagesBoard extends PureComponent {
   };
 
   render() {
-    const {data} = this.props;
+    const {data, loadEarlier, loading} = this.props;
 
     return (
       <View style={styles.container}>
@@ -56,10 +58,20 @@ export default class MessagesBoard extends PureComponent {
           keyExtractor={this.keyExtractor}
           inverted
           removeClippedSubviews={true}
+          keyboardShouldPersistTaps={'always'}
+          onEndReachedThreshold={0.25}
+          onEndReached={!loading && loadEarlier}
+          ListFooterComponent={this.renderLoadingEarlier}
         />
       </View>
     );
   }
+
+  renderLoadingEarlier = () => {
+    if (this.props.renderLoadingEarlier) this.props.renderLoadingEarlier();
+    else
+      return <ActivityIndicator style={styles.loadingEarlier} size={'large'} />;
+  };
 
   keyExtractor = item => item.id;
 }
@@ -71,5 +83,9 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 15,
+  },
+  loadingEarlier: {
+    color: '#F5F5F5',
+    alignSelf: 'center',
   },
 });

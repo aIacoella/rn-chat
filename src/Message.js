@@ -1,13 +1,14 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import {Text} from './Text';
+import ParsedText from 'react-native-parsed-text';
 
 export default ({
   text,
   timestamp,
-  messageContainer,
+  styleMessageContainer,
   userMade,
-  messageContent,
+  styleMessageContent,
   continuation,
 }) => {
   return (
@@ -16,11 +17,21 @@ export default ({
         styles.container,
         userMade ? styles.right : styles.left,
         continuation ? styles.continuation : null,
-        messageContainer,
+        styleMessageContainer,
       ]}>
-      <Text style={[styles.content, messageContent]}>{text}</Text>
+      <MessageText style={[styles.content, styleMessageContent]}>
+        {text}
+      </MessageText>
       <Text style={[styles.time]}>{renderTime(timestamp)}</Text>
     </View>
+  );
+};
+
+export const MessageText = ({children, ...rest}) => {
+  return (
+    <ParsedText {...rest} parse={MESSAGE_PARSER}>
+      {children}
+    </ParsedText>
   );
 };
 
@@ -69,4 +80,18 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontSize: 12,
   },
+
+  link: {
+    color: '#0645AD',
+    textDecorationLine: 'underline',
+  },
 });
+
+const handleLinkPress = link => Alert.alert(`${link} pressed!`);
+
+const MESSAGE_PARSER = [
+  {type: 'url', style: styles.link, onPress: handleLinkPress},
+  {type: 'phone', style: styles.link, onPress: handleLinkPress},
+  {type: 'email', style: styles.link, onPress: handleLinkPress},
+  {pattern: /#(\w+)/, style: styles.link, onPress: handleLinkPress},
+];

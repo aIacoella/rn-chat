@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {TextInput, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {
+  TextInput,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {Text} from './Text';
 import uuid from 'uuid';
@@ -15,11 +21,13 @@ export default class Input extends Component {
   };
 
   onSend = () => {
-    this.state.value &&
+    Keyboard.dismiss();
+    const value = String(this.state.value).trim();
+    value &&
       this.props.onSend({
         user: this.props.user,
         id: uuid.v4(),
-        text: this.state.value,
+        text: value,
         timestamp: new Date(),
       });
     this.setState({value: ''});
