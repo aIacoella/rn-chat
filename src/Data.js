@@ -15,7 +15,7 @@ export const User3 = {
   id: 3,
 };
 
-const generateMessages = (numMessages, from, to) => {
+export const generateMessages = (numMessages, from, to) => {
   let messages = [];
   const firstDay = new Date(from);
   const lastDay = new Date(to);

@@ -26,6 +26,7 @@ export default class MessagesBoard extends PureComponent {
     let timestamp = item[Settings.TIMESTAMP];
     const user = item[Settings.USER];
     const system = item[Settings.SYSTEM];
+    console.log(Settings.SYSTEM);
 
     timestamp = timestamp instanceof Date ? timestamp : new Date(timestamp);
     let showDate = index == data.length - 1;
@@ -38,7 +39,7 @@ export default class MessagesBoard extends PureComponent {
       showDate = currentDate !== nextDate;
     }
 
-    if (system) return <SystemMessage {...item} />;
+    if (system) return <SystemMessage item={item} />;
 
     const continuation =
       data[index + 1] &&
@@ -52,7 +53,7 @@ export default class MessagesBoard extends PureComponent {
         refresh={showDate}
         item={item}
         showDate={showDate}
-        continuation={continuation}
+        newMessage={!continuation}
         userMade={owner[Settings.USER_ID] === user[Settings.USER_ID]}
         onLongPress={this.onLongPress}
       />

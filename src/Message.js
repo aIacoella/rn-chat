@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
 import {Text} from './Text';
 import ParsedText from 'react-native-parsed-text';
+import {renderTime} from './Timestamp';
 
 export default ({
   text,
@@ -9,7 +10,7 @@ export default ({
   styleMessageContainer,
   userMade,
   styleMessageContent,
-  continuation,
+  newMessage,
   pressed,
 }) => {
   return (
@@ -17,7 +18,7 @@ export default ({
       style={[
         styles.container,
         userMade ? styles.right : styles.left,
-        continuation ? styles.continuation : null,
+        newMessage ? styles.newMessage : null,
         pressed ? styles.pressed : null,
         styleMessageContainer,
       ]}>
@@ -35,20 +36,6 @@ export const MessageText = ({children, ...rest}) => {
       {children}
     </ParsedText>
   );
-};
-
-const renderTime = timestamp => {
-  if (!(timestamp instanceof Date)) timestamp = new Date(timestamp);
-  return (
-    addZeros(String(timestamp.getHours())) +
-    ':' +
-    addZeros(String(timestamp.getMinutes()))
-  );
-};
-
-const addZeros = str => {
-  if (str.length < 2) return '0' + str;
-  else return str;
 };
 
 const OTHER_BACKGROUND_COLOR = '#FFFFFF';
@@ -78,12 +65,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingBottom: 4,
   },
-  continuation: {
-    marginTop: 2,
-  },
   time: {
     alignSelf: 'flex-end',
     fontSize: 12,
+  },
+  newMessage: {
+    marginTop: 5,
   },
 
   link: {

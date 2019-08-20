@@ -10,7 +10,7 @@ export default class Bubble extends Component {
     refresh: PropTypes.bool,
     item: PropTypes.object,
     showDate: PropTypes.bool,
-    continuation: PropTypes.bool,
+    newMessage: PropTypes.bool,
     userMade: PropTypes.bool,
   };
 
@@ -32,12 +32,16 @@ export default class Bubble extends Component {
   };
 
   render() {
-    const {item, showDate, continuation, userMade, onLongPress} = this.props;
+    const {item, showDate, newMessage, userMade, onLongPress} = this.props;
+    const timestamp =
+      item[Settings.TIMESTAMP] instanceof Date
+        ? item[Settings.TIMESTAMP]
+        : new Date(item[Settings.TIMESTAMP]);
     const {pressed} = this.state;
 
     return (
       <View>
-        {showDate && <Timestamp timestamp={item[Settings.TIMESTAMP]} />}
+        {showDate && <Timestamp timestamp={timestamp} />}
         <TouchableWithoutFeedback
           onPressIn={this.onPressIn}
           onPressOut={this.onPressOut}
@@ -45,9 +49,9 @@ export default class Bubble extends Component {
           <View>
             <Message
               text={item[Settings.TEXT]}
-              timestamp={item[Settings.TIMESTAMP]}
+              timestamp={timestamp}
               userMade={userMade}
-              continuation={continuation}
+              newMessage={newMessage}
               pressed={pressed}
             />
           </View>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import PropTypes from 'prop-types';
-import MessagesBoard from './MessagesBoard';
+import Board from './Board';
 import Input from './Input';
 import Settings from './Settings';
 
@@ -28,7 +28,7 @@ export default class RNChat extends Component {
 
     return (
       <View style={[styles.containerStyle, containerStyle]}>
-        <MessagesBoard {...this.props} />
+        <Board {...this.props} />
         {this.renderInput()}
       </View>
     );

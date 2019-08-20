@@ -2,17 +2,17 @@ RN-Chat
 
 Features
 - [ ] Images
-- [ ] Vocals
+- [-] Vocals
 - [x] Touchable links
 - [ ] Customisable components
 - [x] Keys customization
 - [ ] Composer actions
 - [x] Load Earlier 
 - [x] Long press
-- [ ] ? Avatar
+- [-] Avatar
 - [x] Multiline
 - [x] Redux Support
 - [x] System messages
 
 ToDo
-- [ ] **Generalize Timestamp
+- [x] **Generalize Timestamp

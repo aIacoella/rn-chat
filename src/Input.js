@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import {Text} from './Text';
 import uuid from 'uuid';
+import Settings from './Settings';
 
 export default class Input extends Component {
   static propTypes = {
@@ -25,10 +26,10 @@ export default class Input extends Component {
     const value = String(this.state.value).trim();
     value &&
       this.props.onSend({
-        user: this.props.user,
-        id: uuid.v4(),
-        text: value,
-        timestamp: new Date(),
+        [Settings.USER]: this.props.user,
+        [Settings.MESSAGE_ID]: uuid.v4(),
+        [Settings.TEXT]: value,
+        [Settings.TIMESTAMP]: new Date(),
       });
     this.setState({value: ''});
   };

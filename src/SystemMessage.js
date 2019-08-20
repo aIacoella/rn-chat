@@ -1,8 +1,10 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from './Text';
+import Settings from './Settings';
 
-export default ({text, styleSystemMessage, ...rest}) => {
+export default ({item, styleSystemMessage, ...rest}) => {
+  const text = item[Settings.TEXT];
   return (
     <Text style={[styles.systemMessage, styleSystemMessage]} {...rest}>
       {text}
@@ -16,5 +18,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#303030',
     alignSelf: 'center',
+    marginVertical: 5,
   },
 });

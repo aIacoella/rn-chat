@@ -2,12 +2,28 @@ import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 
 export default ({timestamp}) => {
-  if (!(timestamp instanceof Date)) timestamp = new Date(timestamp);
   return (
     <Text style={styles.timestamp}>
-      {timestamp.getDate() + ' / ' + (timestamp.getMonth() + 1)}
+      {timestamp.getDate() +
+        ' ' +
+        MONTHS[timestamp.getMonth()] +
+        ' ' +
+        timestamp.getFullYear()}
     </Text>
   );
+};
+
+export const renderTime = timestamp => {
+  return (
+    addZeros(String(timestamp.getHours())) +
+    ':' +
+    addZeros(String(timestamp.getMinutes()))
+  );
+};
+
+export const addZeros = str => {
+  if (str.length < 2) return '0' + str;
+  else return str;
 };
 
 const styles = StyleSheet.create({
@@ -15,22 +31,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 
 const MONTHS = [
-  'Gen',
-  'Feb',
-  'Mar',
-  'Apr',
-  'Mag',
-  'Giu',
-  'Lug',
-  'Ago',
-  'Set',
-  'Ott',
-  'Nov',
-  'Dic',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 const DAYS = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
