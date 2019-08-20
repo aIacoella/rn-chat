@@ -6,6 +6,7 @@ import MessageContainer from './MessageContainer';
 import Timestamp from './Timestamp';
 import Message from './Message';
 import {User1} from './Data';
+import SystemMessage from './SystemMessage';
 
 export default class MessagesBoard extends PureComponent {
   static propTypes = {
@@ -17,9 +18,9 @@ export default class MessagesBoard extends PureComponent {
 
   renderMessage = ({item, index}) => {
     const {user: owner, data} = this.props;
-    let {timestamp, user} = item;
-    timestamp = timestamp instanceof Date ? timestamp : new Date(timestamp);
+    let {timestamp, user, system} = item;
 
+    timestamp = timestamp instanceof Date ? timestamp : new Date(timestamp);
     let showDate = index == data.length - 1;
     if (!showDate) {
       const currentDate = timestamp.getDate();
@@ -29,8 +30,18 @@ export default class MessagesBoard extends PureComponent {
           : new Date(data[index + 1].timestamp).getDate();
       showDate = currentDate !== nextDate;
     }
+
+    if (system)
+      return (
+        <MessageContainer refresh={showDate}>
+          {showDate && <Timestamp timestamp={timestamp} />}
+          <SystemMessage {...item} />
+        </MessageContainer>
+      );
+
     const continuation =
-      index + 1 !== data.length &&
+      data[index + 1] &&
+      data[index + 1].user &&
       !showDate &&
       data[index + 1].user.id === user.id;
 
@@ -85,6 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   loadingEarlier: {
+    marginVertical: 10,
     color: '#F5F5F5',
     alignSelf: 'center',
   },

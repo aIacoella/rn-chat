@@ -32,6 +32,14 @@ const generateMessages = (numMessages, from, to) => {
       text: 'Messaggio ' + i,
       user: Math.random() < 0.5 ? User1 : User2,
     });
+
+    if (i % 10 == 0)
+      messages.unshift({
+        id: uuid.v4(),
+        timestamp: timestamp.toString(),
+        text: 'Messaggio ' + i,
+        system: true,
+      });
   }
   return messages;
 };

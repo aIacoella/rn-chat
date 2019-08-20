@@ -5,13 +5,14 @@ Features
 - [ ] Vocals
 - [x] Touchable links
 - [ ] Customisable components
+- [ ] Keys customization
 - [ ] Composer actions
 - [x] Load Earlier 
-- [ ] Long press highlight
+- [ ] **Long press highlight
 - [ ] ? Avatar
 - [x] Multiline
-- [ ] Redux Support
-- [ ] System messages
+- [x] Redux Support
+- [x] System messages
 
 ToDo
 - [ ] Generalize Timestamp
