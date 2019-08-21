@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {Text} from './Text';
@@ -13,8 +14,12 @@ import Settings from './Settings';
 
 export default class Input extends Component {
   static propTypes = {
-    onSend: PropTypes.func.isRequired,
+    onSend: PropTypes.func,
+    text: PropTypes.any,
+    onChangeText: PropTypes.func,
+
     user: PropTypes.object,
+    persistTextOnSubmit: PropTypes.bool,
   };
 
   state = {
@@ -22,8 +27,7 @@ export default class Input extends Component {
   };
 
   onSend = () => {
-    Keyboard.dismiss();
-    const value = String(this.state.value).trim();
+    const value = String(this.props.text || this.state.value).trim();
     value &&
       this.props.onSend({
         [Settings.USER]: this.props.user,
@@ -31,22 +35,34 @@ export default class Input extends Component {
         [Settings.TEXT]: value,
         [Settings.TIMESTAMP]: new Date(),
       });
-    this.setState({value: ''});
+    if (!this.props.persistTextOnSubmit) {
+      this.onChangeText('');
+      Keyboard.dismiss();
+    }
   };
 
-  onChangeText = value => this.setState({value});
+  onChangeText = value =>
+    this.props.onChangeText
+      ? this.props.onChangeText(value)
+      : this.setState({value});
 
   render() {
+    const {value} = this.state;
+    const {text} = this.props;
+
     return (
       <View style={styles.container}>
         <View style={styles.toolbar}>
-          <TextInput
-            style={styles.input}
-            multiline
-            placeholder={'Send a message'}
-            value={this.state.value}
-            onChangeText={this.onChangeText}
-          />
+          <ScrollView style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              multiline
+              placeholder={'Send a message'}
+              value={text || value}
+              onChangeText={this.onChangeText}
+              sub
+            />
+          </ScrollView>
           <TouchableOpacity style={styles.btn} onPress={this.onSend}>
             <Text style={styles.btnText}>Send</Text>
           </TouchableOpacity>
@@ -77,9 +93,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 4,
   },
+  inputContainer: {
+    maxHeight: 200,
+    padding: 4,
+  },
   input: {
     flex: 1,
     fontSize: 17,
-    padding: 4,
+    padding: 0,
   },
 });

@@ -24,6 +24,7 @@ export default class RNChat extends Component {
     renderDate: PropTypes.func,
     renderBubble: PropTypes.func,
     renderTime: PropTypes.func,
+    renderFooter: PropTypes.func,
 
     onBubbleLongPress: PropTypes.func,
   };

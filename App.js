@@ -18,6 +18,7 @@ export default class App extends Component {
   state = {
     data: messages,
     loading: false,
+    text: '',
   };
 
   loadEarlier = () => {
@@ -32,14 +33,18 @@ export default class App extends Component {
     }, 500);
   };
 
+  onChangeText = text => this.setState({text});
+
   render() {
-    const {data, loading} = this.state;
+    const {data, loading, text} = this.state;
     return (
       <View style={{flex: 1}}>
         <RNChat
+          text={text}
+          onChangeText={this.onChangeText}
+          onSend={this.onSend}
           data={data}
           user={User1}
-          onSend={this.onSend}
           loadEarlier={this.loadEarlier}
           loading={loading}
           syntax={{message: {text: 'testo'}}}

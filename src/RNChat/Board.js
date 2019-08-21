@@ -80,7 +80,7 @@ export default class MessagesBoard extends PureComponent {
   };
 
   render() {
-    const {data, loadEarlier, loading} = this.props;
+    const {data, loadEarlier, loading, renderFooter} = this.props;
 
     return (
       <View style={styles.container}>
@@ -95,6 +95,7 @@ export default class MessagesBoard extends PureComponent {
           onEndReachedThreshold={0.25}
           onEndReached={!loading && loadEarlier}
           ListFooterComponent={loading && this.renderLoadingEarlier}
+          ListHeaderComponent={renderFooter}
           windowSize={51}
           maxToRenderPerBatch={30}
         />
