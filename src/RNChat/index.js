@@ -15,12 +15,22 @@ export default class RNChat extends Component {
     containerStyle: PropTypes.object,
     data: PropTypes.array.isRequired,
     onSend: PropTypes.func.isRequired,
-
     syntax: PropTypes.object,
+
+    renderInput: PropTypes.func,
+    renderBubbleContainer: PropTypes.func,
+    renderSystemMessages: PropTypes.func,
+    renderLoadingEarlier: PropTypes.func,
+    renderDate: PropTypes.func,
+    renderBubble: PropTypes.func,
+    renderTime: PropTypes.func,
+
+    onBubbleLongPress: PropTypes.func,
   };
 
   renderInput = () => {
-    return <Input {...this.props} />;
+    if (this.props.renderInput) return this.props.renderInput(this.props);
+    else return <Input {...this.props} />;
   };
 
   render() {

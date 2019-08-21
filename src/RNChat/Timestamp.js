@@ -3,7 +3,7 @@ import {Text, StyleSheet, View} from 'react-native';
 
 export default ({timestamp}) => {
   return (
-    <Text style={styles.timestamp}>
+    <Text style={styles.date}>
       {timestamp.getDate() +
         ' ' +
         MONTHS[timestamp.getMonth()] +
@@ -13,7 +13,7 @@ export default ({timestamp}) => {
   );
 };
 
-export const renderTime = timestamp => {
+export const dispalyTime = timestamp => {
   return (
     addZeros(String(timestamp.getHours())) +
     ':' +
@@ -26,8 +26,11 @@ export const addZeros = str => {
   else return str;
 };
 
+export const getFullDate = date =>
+  date.getDate() + '' + date.getMonth() + '' + date.getFullYear();
+
 const styles = StyleSheet.create({
-  timestamp: {
+  date: {
     fontSize: 14,
     fontWeight: '500',
     alignSelf: 'center',

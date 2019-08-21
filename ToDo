@@ -13,6 +13,7 @@ Features
 - [x] Multiline
 - [x] Redux Support
 - [x] System messages
+- [ ] Select Item (Whatsapp style)
 
 ToDo
 - [x] **Generalize Timestamp

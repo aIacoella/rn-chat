@@ -1,33 +1,42 @@
-import React from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import React, {Fragment} from 'react';
+import {StyleSheet, View, Alert, TouchableOpacity} from 'react-native';
 import {Text} from './Text';
 import ParsedText from 'react-native-parsed-text';
-import {renderTime} from './Timestamp';
+import Settings from './Settings';
+import {dispalyTime} from './Timestamp';
 
 export default ({
-  text,
-  timestamp,
+  item,
   styleMessageContainer,
   userMade,
   styleMessageContent,
   newMessage,
   pressed,
+  renderTime: overideRenderTime,
+  onLongPress,
 }) => {
   return (
-    <View
+    <TouchableOpacity
       style={[
         styles.container,
         userMade ? styles.right : styles.left,
         newMessage ? styles.newMessage : null,
         pressed ? styles.pressed : null,
         styleMessageContainer,
-      ]}>
-      <MessageText style={[styles.content, styleMessageContent]}>
-        {text}
-      </MessageText>
-      <Text style={[styles.time]}>{renderTime(timestamp)}</Text>
-    </View>
+      ]}
+      onLongPress={onLongPress}>
+      <Fragment>
+        <MessageText style={[styles.content, styleMessageContent]}>
+          {item[Settings.TEXT]}
+        </MessageText>
+        {overideRenderTime ? overideRenderTime(item) : <TimeSpan item={item} />}
+      </Fragment>
+    </TouchableOpacity>
   );
+};
+
+export const TimeSpan = props => {
+  return <Text style={[styles.time]}>{dispalyTime(props.item.timestamp)}</Text>;
 };
 
 export const MessageText = ({children, ...rest}) => {

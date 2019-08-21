@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import RNChat from './src/RNChat';
-import {messages, User1, messages2, generateMessages} from './src/Data';
+import {messages, User1, messages2, generateMessages} from './src/RNChat/Data';
 import update from 'immutability-helper';
 
 export default class App extends Component {

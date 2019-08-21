@@ -7,9 +7,12 @@ import {
   Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Bubble from './Bubble';
 import SystemMessage from './SystemMessage';
 import Settings from './Settings';
+import BubbleContainer from './BubbleContainer';
+import update from 'immutability-helper';
+import {Text} from './Text';
+import {getFullDate} from './Timestamp';
 
 export default class MessagesBoard extends PureComponent {
   static propTypes = {
@@ -18,28 +21,44 @@ export default class MessagesBoard extends PureComponent {
     loadEarlier: PropTypes.func,
     loading: PropTypes.bool,
     onBubbleLongPress: PropTypes.func,
+
+    renderBubble: PropTypes.func,
+    renderBubbleContainer: PropTypes.func,
+    renderSystemMessages: PropTypes.func,
   };
 
-  renderMessage = ({item, index}) => {
+  renderItem = ({item, index}) => {
     const {user: owner, data} = this.props;
 
     let timestamp = item[Settings.TIMESTAMP];
     const user = item[Settings.USER];
     const system = item[Settings.SYSTEM];
-    console.log(Settings.SYSTEM);
 
     timestamp = timestamp instanceof Date ? timestamp : new Date(timestamp);
     let showDate = index == data.length - 1;
     if (!showDate) {
-      const currentDate = timestamp.getDate();
-      const nextDate =
+      const nextTimestamp =
         data[index + 1][Settings.TIMESTAMP] instanceof Date
-          ? data[index + 1][Settings.TIMESTAMP].getDate()
-          : new Date(data[index + 1][Settings.TIMESTAMP]).getDate();
+          ? data[index + 1][Settings.TIMESTAMP]
+          : new Date(data[index + 1][Settings.TIMESTAMP]);
+
+      const currentDate = getFullDate(timestamp);
+      const nextDate = getFullDate(nextTimestamp);
+
       showDate = currentDate !== nextDate;
+      if (showDate) console.log(showDate);
     }
 
-    if (system) return <SystemMessage item={item} />;
+    const itemRefactored = update(item, {
+      $merge: {
+        timestamp,
+      },
+    });
+
+    if (system)
+      return this.renderSystemMessage({
+        item,
+      });
 
     const continuation =
       data[index + 1] &&
@@ -48,16 +67,16 @@ export default class MessagesBoard extends PureComponent {
       data[index + 1][Settings.USER][Settings.USER_ID] ===
         user[Settings.USER_ID];
 
-    return (
-      <Bubble
-        refresh={showDate}
-        item={item}
-        showDate={showDate}
-        newMessage={!continuation}
-        userMade={owner[Settings.USER_ID] === user[Settings.USER_ID]}
-        onLongPress={this.onLongPress}
-      />
-    );
+    return this.renderBubbleContainer({
+      refresh: showDate,
+      item: itemRefactored,
+      showDate,
+      newMessage: !continuation,
+      userMade: owner[Settings.USER_ID] === user[Settings.USER_ID],
+      onLongPress: this.onLongPress,
+      renderTime: this.props.renderTime,
+      renderDate: this.props.renderDate,
+    });
   };
 
   render() {
@@ -68,18 +87,32 @@ export default class MessagesBoard extends PureComponent {
         <FlatList
           contentContainerStyle={styles.list}
           data={data}
-          renderItem={this.renderMessage}
+          renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
           inverted
           removeClippedSubviews={true}
           keyboardShouldPersistTaps={'always'}
           onEndReachedThreshold={0.25}
           onEndReached={!loading && loadEarlier}
-          ListFooterComponent={this.renderLoadingEarlier}
+          ListFooterComponent={loading && this.renderLoadingEarlier}
+          windowSize={51}
+          maxToRenderPerBatch={30}
         />
       </View>
     );
   }
+
+  renderBubbleContainer = props => {
+    if (this.props.renderBubbleContainer)
+      return this.props.renderBubbleContainer(props);
+    else return <BubbleContainer {...props} />;
+  };
+
+  renderSystemMessage = props => {
+    if (this.props.renderSystemMessage)
+      return this.props.renderSystemMessage(props);
+    else return <SystemMessage {...props} />;
+  };
 
   renderLoadingEarlier = () => {
     if (this.props.renderLoadingEarlier) this.props.renderLoadingEarlier();
