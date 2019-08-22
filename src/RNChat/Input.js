@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -35,9 +36,11 @@ export default class Input extends Component {
         [Settings.TEXT]: value,
         [Settings.TIMESTAMP]: new Date(),
       });
-    if (!this.props.persistTextOnSubmit) {
-      this.onChangeText('');
+    if (!this.props.persistKeyboardOnSubmit) {
       Keyboard.dismiss();
+      this.setState({
+        value: '',
+      });
     }
   };
 
@@ -60,7 +63,6 @@ export default class Input extends Component {
               placeholder={'Send a message'}
               value={text || value}
               onChangeText={this.onChangeText}
-              sub
             />
           </ScrollView>
           <TouchableOpacity style={styles.btn} onPress={this.onSend}>

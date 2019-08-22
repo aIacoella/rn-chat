@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {Text, SafeAreaView} from 'react-native';
 import RNChat from './src/RNChat';
 import {messages, User1, messages2, generateMessages} from './src/RNChat/Data';
 import update from 'immutability-helper';
@@ -38,7 +38,7 @@ export default class App extends Component {
   render() {
     const {data, loading, text} = this.state;
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <RNChat
           text={text}
           onChangeText={this.onChangeText}
@@ -49,7 +49,7 @@ export default class App extends Component {
           loading={loading}
           syntax={{message: {text: 'testo'}}}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -57,6 +57,7 @@ export default class App extends Component {
     this.setState(state =>
       update(state, {
         data: {$unshift: [message]},
+        text: {$set: ''},
       }),
     );
   };

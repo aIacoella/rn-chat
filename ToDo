@@ -4,16 +4,17 @@ Features
 - [ ] Images
 - [-] Vocals
 - [x] Touchable links
-- [ ] Customisable components
+- [x] Customisable components
 - [x] Keys customization
-- [ ] Composer actions
+- [-] Composer actions
 - [x] Load Earlier 
 - [x] Long press
 - [-] Avatar
 - [x] Multiline
 - [x] Redux Support
 - [x] System messages
-- [ ] Select Item (Whatsapp style)
+- [-] Select Item (Whatsapp style)
+- [x] Footer
 
 ToDo
 - [x] **Generalize Timestamp
